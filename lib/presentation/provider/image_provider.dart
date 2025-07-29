@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../secrets/api_key.dart';
+
 // Enhanced state management enums
 enum AppState {
   initial,
@@ -48,7 +50,6 @@ class ImageHandleProvider extends ChangeNotifier {
   bool get canRemoveBackground => hasOriginalImage && !isLoading;
   bool get canSaveImage => hasProcessedImage && !isLoading;
 
-  final String _apiKey = 'FoA1Lb3RJdW4SvgP46DZvFrJ';
 
   // Enhanced image picking with better state management
   Future<void> pickImage() async {
@@ -94,7 +95,7 @@ class ImageHandleProvider extends ChangeNotifier {
         'POST',
         Uri.parse('https://api.remove.bg/v1.0/removebg'),
       );
-      request.headers['X-Api-Key'] = _apiKey;
+      request.headers['X-Api-Key'] = Apikey().key;
       request.files.add(await http.MultipartFile.fromPath('image_file', _originalImage!.path));
       request.fields['size'] = 'auto';
       
